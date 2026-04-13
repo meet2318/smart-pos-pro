@@ -1,0 +1,47 @@
+CREATE DATABASE SmartPOSDB;
+GO
+
+USE SmartPOSDB;
+GO
+
+CREATE TABLE Roles (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(50) NOT NULL UNIQUE,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Users (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    FullName NVARCHAR(100) NOT NULL,
+    Email NVARCHAR(100) NOT NULL UNIQUE,
+    PasswordHash NVARCHAR(MAX) NOT NULL,
+    RoleId INT NOT NULL,
+    IsActive BIT DEFAULT 1,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (RoleId) REFERENCES Roles(Id)
+);
+
+CREATE TABLE Categories (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(100) NOT NULL,
+    Description NVARCHAR(255),
+    IsDeleted BIT DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE()
+);
+
+CREATE TABLE Products (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    Name NVARCHAR(150) NOT NULL,
+    SKU NVARCHAR(50) UNIQUE,
+    CategoryId INT NOT NULL,
+    Price DECIMAL(18,2) NOT NULL,
+    StockQuantity INT DEFAULT 0,
+    Description NVARCHAR(255),
+    IsDeleted BIT DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (CategoryId) REFERENCES Categories(Id)
+);
+
+INSERT INTO Roles (Name)
+VALUES ('Admin'), ('Manager'), ('Cashier');
+
