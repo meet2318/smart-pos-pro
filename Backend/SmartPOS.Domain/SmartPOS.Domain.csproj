@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Entities\" />
     <Folder Include="Enums\" />
     <Folder Include="Constants\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Entities\RefreshToken.cs" />
   </ItemGroup>
 
 </Project>
