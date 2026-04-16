@@ -14,10 +14,12 @@ CREATE TABLE Users (
     Id INT PRIMARY KEY IDENTITY(1,1),
     FullName NVARCHAR(100) NOT NULL,
     Email NVARCHAR(100) NOT NULL UNIQUE,
+    MobileNumber VARCHAR(10) NOT NULL,
     PasswordHash NVARCHAR(MAX) NOT NULL,
     RoleId INT NOT NULL,
     IsActive BIT DEFAULT 1,
     CreatedAt DATETIME DEFAULT GETDATE(),
+    UpdatedAt DATETIME NULL,
     FOREIGN KEY (RoleId) REFERENCES Roles(Id)
 );
 
@@ -45,3 +47,13 @@ CREATE TABLE Products (
 INSERT INTO Roles (Name)
 VALUES ('Admin'), ('Manager'), ('Cashier');
 
+
+CREATE TABLE RefreshTokens (
+    Id INT PRIMARY KEY IDENTITY(1,1),
+    UserId INT NOT NULL,
+    Token NVARCHAR(MAX) NOT NULL,
+    ExpiresAt DATETIME NOT NULL,
+    IsRevoked BIT DEFAULT 0,
+    CreatedAt DATETIME DEFAULT GETDATE(),
+    FOREIGN KEY (UserId) REFERENCES Users(Id)
+);
